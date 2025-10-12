@@ -1,6 +1,6 @@
 # Dataset
 
-This folder contains the data for use in the project, i'm gonna use those datasets:
+This folder contains the data for use in the project, i'm gonna use these datasets:
 
 - **SIDD**: [Smartphone Image Denoising Dataset (SIDD)](https://www.kaggle.com/datasets/rajat95gupta/smartphone-image-denoising-dataset/data)
 - **CBSD68**: [CBSD68 Dataset](https://github.com/clausmichele/CBSD68-dataset/tree/master)
