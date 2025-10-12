@@ -8,7 +8,7 @@ This folder contains the data for use in the project, i'm gonna use these datase
 The folder structure should be organized:
 
 ```bash
-data/
+datasets/
 │── SIDD_small/
 │   ├── noisy/
 │   ├── clean/
