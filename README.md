@@ -21,7 +21,7 @@ where $f_{\theta}$ is a Neural Network trained to transform a noisy image $I_{\t
 
 ### Specific 
 
-- Implement and evaluate models based on Convolutional Neural Networks (CNNs), LIKE DnCNN and NAFNet.
+- Implement and evaluate models based on Convolutional Neural Networks (CNNs), like DnCNN and NAFNet.
 
 - Integrate variants of these models that incorporate attention mechanisms.
 
@@ -34,17 +34,19 @@ where $f_{\theta}$ is a Neural Network trained to transform a noisy image $I_{\t
 ```bash
 Image-Denoising/
 ├── src/
-│   ├── models/
-│   ├── data/
-│   ├── utils/
-│   ├── train.py
-│   ├── test.py
-│   └── visualize.py
+│   ├── denoising/
+│   │   ├── data/
+│   │   ├── models/
+│   │   ├── utils/
+│   │   ├── train.py
+│   │   ├── test.py
+│   │   └── visualize.py
 ├── datasets/
 ├── results/
 │   ├── logs/
 │   ├── denoised_samples/
 │   └── comparisons/
 ├── notebooks/
-└── README.md
+├── README.md
+└── setup.py
 ```
