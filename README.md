@@ -36,11 +36,14 @@ Image-Denoising/
 ├── src/
 │   ├── denoising/
 │   │   ├── data/
+│   │   ├── losses/
+│   │   ├── metrics/
 │   │   ├── models/
+│   │   ├── train/
 │   │   ├── utils/
-│   │   ├── train.py
-│   │   ├── test.py
-│   │   └── visualize.py
+│   │   ├── visualization/
+│   │   └── __init__.py
+│   └── README.md
 ├── datasets/
 ├── results/
 │   ├── logs/
@@ -50,3 +53,8 @@ Image-Denoising/
 ├── README.md
 └── setup.py
 ```
+
+## References
+
+- Beyond a Gaussian Denoiser: Residual Learning of Deep CNN for Image Denoising.
+[Paper on arXiv](https://arxiv.org/abs/1608.03981)
