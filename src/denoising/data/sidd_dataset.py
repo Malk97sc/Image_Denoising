@@ -1,8 +1,10 @@
 import torch 
 from torch.utils.data import Dataset
 from torchvision import transforms
+import torchvision.transforms.functional as TF
 import cv2 as cv
-import os
+from PIL import Image
+import os, random
 
 class SIDD(Dataset):
     def __init__(self, root_dir, mode = 'train', img_size = 128):
@@ -19,38 +21,43 @@ class SIDD(Dataset):
         self.mode = mode
 
         self.image_names = sorted(os.listdir(self.noisy_dir))
-        self.transform = self._build_transforms()
-
-    def _build_transforms(self):
-        if self.mode == 'train':
-            return transforms.Compose([
-                transforms.ToPILImage(),
-                transforms.RandomCrop(self.img_size),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                transforms.ToTensor(),  #to [0,1]
-            ])
-        else:
-            return transforms.Compose([
-                transforms.ToPILImage(),
-                transforms.CenterCrop(self.img_size),
-                transforms.ToTensor(),
-            ])
+        self.to_tensor = transforms.ToTensor()
 
     def __len__(self):
         return len(self.image_names)
+    
+    def _read_rgb(self, path):
+        bgr = cv.imread(path, cv.IMREAD_COLOR)
+        rgb = cv.cvtColor(bgr, cv.COLOR_BGR2RGB)
+        return Image.fromarray(rgb)
 
     def __getitem__(self, idx):
         noisy_path = os.path.join(self.noisy_dir, self.image_names[idx])
         clean_path = os.path.join(self.clean_dir, self.image_names[idx])
 
-        noisy_img = cv.imread(noisy_path, cv.IMREAD_COLOR_RGB)
-        clean_img = cv.imread(clean_path, cv.IMREAD_COLOR_RGB)
+        noisy = self._read_rgb(noisy_path)
+        clean = self._read_rgb(clean_path) 
 
-        if noisy_img is None or clean_img is None:
-            raise FileNotFoundError(f"Error loading {noisy_path} or {clean_path}")
+        if self.mode == 'train':
+            th, tw = self.img_size, self.img_size
+            w, h = noisy.size
+            if h < th or w < tw:
+                crop = transforms.CenterCrop((max(th, h), max(tw, w)))
+                noisy = crop(noisy); clean = crop(clean)
 
-        noisy_tensor = self.transform(noisy_img)
-        clean_tensor = self.transform(clean_img)
+            i, j, h, w = transforms.RandomCrop.get_params(noisy, output_size=(th, tw))
+            noisy = TF.crop(noisy, i, j, h, w)
+            clean = TF.crop(clean, i, j, h, w)
+
+            if random.random() < 0.5:
+                noisy = TF.hflip(noisy); clean = TF.hflip(clean)
+            if random.random() < 0.5:
+                noisy = TF.vflip(noisy); clean = TF.vflip(clean)
+        else:
+            crop = transforms.CenterCrop(self.img_size)
+            noisy = crop(noisy); clean = crop(clean)
+
+        noisy_tensor = self.to_tensor(noisy) #[0,1]
+        clean_tensor = self.to_tensor(clean) #[0,1]
 
         return noisy_tensor, clean_tensor
