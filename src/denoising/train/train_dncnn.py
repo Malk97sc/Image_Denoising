@@ -57,10 +57,10 @@ def train_dncnn(model, train_loader, val_loader, device, epochs=50, lr=1e-1):
         ssim_vals.append(ssim_epoch)
 
         print(f"Epoch [{epoch+1}/{epochs}]")
-        print(f"  Train Loss: {train_loss:.6f}")
-        print(f"  Val Loss:   {val_loss:.6f}")
-        print(f"  PSNR:       {psnr_epoch:.2f}")
-        print(f"  SSIM:       {ssim_epoch:.3f}")
+        print(f" Train Loss: {train_loss:.6f}")
+        print(f" Val Loss: {val_loss:.6f}")
+        print(f" PSNR: {psnr_epoch:.2f}")
+        print(f" SSIM: {ssim_epoch:.3f}")
         print("-" * 40)
 
     plot_training_curves(train_losses, val_losses, psnr_vals, ssim_vals)
